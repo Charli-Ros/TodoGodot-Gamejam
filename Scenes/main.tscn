@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://cs5v85v85trku"]
+
+[ext_resource type="PackedScene" uid="uid://brjtmdgh0ulmc" path="res://Scenes/player.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://2x2lnobk7ap8" path="res://Scenes/rigid_body_2d.gd" id="2_bo1nx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7u77a"]
+size = Vector2(329, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjgbg"]
+
+[node name="Main" type="Node2D"]
+
+[node name="LeftBranch" type="StaticBody2D" parent="."]
+position = Vector2(10, 575)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBranch"]
+position = Vector2(154.5, 0)
+shape = SubResource("RectangleShape2D_7u77a")
+
+[node name="RightBranch" type="StaticBody2D" parent="."]
+position = Vector2(401, 381)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBranch"]
+position = Vector2(154.5, 0)
+shape = SubResource("RectangleShape2D_7u77a")
+
+[node name="Player" parent="." instance=ExtResource("1_jjgbg")]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+script = ExtResource("2_bo1nx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2(154, 102)
+shape = SubResource("RectangleShape2D_jjgbg")
