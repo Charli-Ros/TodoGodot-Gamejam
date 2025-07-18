@@ -1,17 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://brjtmdgh0ulmc"]
+[gd_scene load_steps=5 format=3 uid="uid://brjtmdgh0ulmc"]
 
 [ext_resource type="Script" uid="uid://d3ybwkflnrdq2" path="res://Scenes/player.gd" id="1_cvnsp"]
-[ext_resource type="Texture2D" uid="uid://calg5lpg03kp4" path="res://icon.svg" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://0v6cg5gvn6tu" path="res://Assets/player_sprites.png" id="2_cvnsp"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cvnsp"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvnsp"]
+atlas = ExtResource("2_cvnsp")
+region = Rect2(4, 7, 14, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
+size = Vector2(16, 16)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_cvnsp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-1.90735e-06, 1)
-scale = Vector2(0.183594, 0.183594)
-texture = ExtResource("1_v0iea")
+position = Vector2(0.5, -1)
+scale = Vector2(1.35714, 1.05882)
+texture = SubResource("AtlasTexture_cvnsp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_cvnsp")
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_cvnsp")

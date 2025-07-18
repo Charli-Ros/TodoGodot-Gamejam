@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+const SPEED = 200.0
+const JUMP_VELOCITY = -200.0
 
 
 func _physics_process(delta: float) -> void:
@@ -24,3 +24,10 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+
+
+func _on_death_zone_body_exited(body: Node2D) -> void:
+	#This reset is intended for testing purposes only.
+	position.x = 141
+	position.y = 427
+	velocity = Vector2(0,0)

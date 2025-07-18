@@ -11,18 +11,21 @@ config_version=5
 [application]
 
 config/name="Todogodot Jam"
-run/main_scene="res://main.tscn"
+run/main_scene="uid://cs5v85v85trku"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=150
-window/size/viewport_height=150
+window/size/viewport_width=270
+window/size/viewport_height=480
 window/size/transparent=true
+window/size/window_width_override=720
+window/size/window_height_override=1280
 window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 viewport/transparent_background=true
