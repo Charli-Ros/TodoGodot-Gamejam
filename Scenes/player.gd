@@ -1,14 +1,15 @@
 extends CharacterBody2D
 
-
 const SPEED = 200.0
-const JUMP_VELOCITY = -200.0
+const JUMP_VELOCITY = -150.0
+const GRAVITY_MOD = 0.5
+
 
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity += get_gravity() * GRAVITY_MOD * delta
 
 	# Handle jump.
 	if Input.is_action_just_pressed("flap"):

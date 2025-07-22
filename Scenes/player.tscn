@@ -21,3 +21,21 @@ texture = SubResource("AtlasTexture_cvnsp")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_cvnsp")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(18.5, -1.00003)
+scale = Vector2(1.35714, 1.05882)
+texture = SubResource("AtlasTexture_cvnsp")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(18.5, -2.95639e-05)
+shape = SubResource("RectangleShape2D_cvnsp")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(-17.5, -1.00003)
+scale = Vector2(1.35714, 1.05882)
+texture = SubResource("AtlasTexture_cvnsp")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(-18, 0)
+shape = SubResource("RectangleShape2D_cvnsp")
