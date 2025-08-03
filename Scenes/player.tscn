@@ -1,14 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://brjtmdgh0ulmc"]
+[gd_scene load_steps=4 format=3 uid="uid://brjtmdgh0ulmc"]
 
 [ext_resource type="Script" uid="uid://d3ybwkflnrdq2" path="res://Scenes/player.gd" id="1_cvnsp"]
-[ext_resource type="Texture2D" uid="uid://0v6cg5gvn6tu" path="res://Assets/player_sprites.png" id="2_cvnsp"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cvnsp"]
-atlas = ExtResource("2_cvnsp")
-region = Rect2(4, 7, 14, 17)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
-size = Vector2(16, 16)
+[ext_resource type="Texture2D" uid="uid://sa30xsaxdtcm" path="res://Scenes/player.tres" id="2_6t5aa"]
+[ext_resource type="Shape2D" uid="uid://bnj775pmrh5x0" path="res://Scenes/bird_collision.tres" id="3_6t5aa"]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_cvnsp")
@@ -16,26 +10,28 @@ script = ExtResource("1_cvnsp")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0.5, -1)
 scale = Vector2(1.35714, 1.05882)
-texture = SubResource("AtlasTexture_cvnsp")
+texture = ExtResource("2_6t5aa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_cvnsp")
+shape = ExtResource("3_6t5aa")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(18.5, -1.00003)
 scale = Vector2(1.35714, 1.05882)
-texture = SubResource("AtlasTexture_cvnsp")
+texture = ExtResource("2_6t5aa")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2(18.5, -2.95639e-05)
-shape = SubResource("RectangleShape2D_cvnsp")
+shape = ExtResource("3_6t5aa")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
 position = Vector2(-17.5, -1.00003)
 scale = Vector2(1.35714, 1.05882)
-texture = SubResource("AtlasTexture_cvnsp")
+texture = ExtResource("2_6t5aa")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
 position = Vector2(-18, 0)
-shape = SubResource("RectangleShape2D_cvnsp")
+shape = ExtResource("3_6t5aa")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]

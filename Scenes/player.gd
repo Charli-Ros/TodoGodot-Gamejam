@@ -28,6 +28,7 @@ func _physics_process(delta: float) -> void:
 
 func _on_death_zone_body_exited(body: Node2D) -> void:
 	#This reset is intended for testing purposes only.
-	position.x = 141
-	position.y = 427
-	velocity = Vector2(0,0)
+	#position.x = 141
+	#position.y = 427
+	#velocity = Vector2(0,0)
+	pass

@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cs5v85v85trku"]
+[gd_scene load_steps=4 format=3 uid="uid://cs5v85v85trku"]
 
 [ext_resource type="Script" uid="uid://ck3iyeodcj3xt" path="res://Scenes/main.gd" id="1_8gbba"]
-[ext_resource type="PackedScene" uid="uid://brjtmdgh0ulmc" path="res://Scenes/player.tscn" id="1_jjgbg"]
-[ext_resource type="PackedScene" uid="uid://oeyh1dp6xjls" path="res://Scenes/level.tscn" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://oeyh1dp6xjls" path="res://Scenes/level1.tscn" id="2_8gbba"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
 size = Vector2(802, 86.5)
@@ -10,10 +9,7 @@ size = Vector2(802, 86.5)
 [node name="Main" type="Node2D"]
 script = ExtResource("1_8gbba")
 
-[node name="Level" parent="." instance=ExtResource("3_8gbba")]
-
-[node name="Player" parent="." instance=ExtResource("1_jjgbg")]
-position = Vector2(141, 427)
+[node name="Level1" parent="." instance=ExtResource("2_8gbba")]
 
 [node name="DeathZone" type="Area2D" parent="."]
 
@@ -24,6 +20,6 @@ shape = SubResource("RectangleShape2D_8gbba")
 [node name="IdleBirds" type="Node2D" parent="."]
 
 [node name="BirdSpawner" type="Node2D" parent="."]
-position = Vector2(174, 197)
+position = Vector2(134, 410)
 
-[connection signal="body_exited" from="DeathZone" to="Player" method="_on_death_zone_body_exited"]
+[connection signal="body_exited" from="DeathZone" to="." method="_on_death_zone_body_exited"]
