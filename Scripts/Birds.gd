@@ -1,14 +1,18 @@
 class_name Birds
 extends CharacterBody2D
 
-#Estas cantidades las quisiera usar para mejorar las probabilidades de
-#colores que se necesitan en pantalla //// SERIAN GLOBALS?
-static var c1_quantity:int = 0
-static var c2_quantity:int = 0
-static var c3_quantity:int = 0
-static var c4_quantity:int = 0
-static var c5_quantity:int = 0
-static var c6_quantity:int = 0
+static var yellow_idle = Rect2(4, 7, 14, 17)
+static var yellow_flying = Rect2(121, 6, 17, 18)
+static var red_idle = Rect2(4, 31, 14, 17)
+static var red_flying = Rect2(121, 30, 17, 18)
+static var pink_idle = Rect2(4, 55, 14, 17)
+static var pink_flying = Rect2(121, 54, 17, 18)
+static var green_idle = Rect2(4, 78, 14, 18)
+static var green_flying = Rect2(121, 77, 17, 19)
+static var grey_idle = Rect2(4, 103, 14, 17)
+static var grey_flying = Rect2(121, 102, 17, 18)
+static var blue_idle = Rect2(4, 126, 14, 18)
+static var blue_flying = Rect2(121, 125, 17, 19)
 
 #Recursos prefabricados para armar la escena del player 
 @onready var birds_collision = preload("res://Scenes/bird_collision.tres")
@@ -46,11 +50,11 @@ func _physics_process(delta: float) -> void:
 		
 		if Input.is_action_just_pressed("flap"):
 			#Intento fallido de animacion de sprites para que vuele.
-			#if not animation_is_playing:
-				#for x in self.get_child_count():
-					#var node = self.get_child(x)
-					#if node.name.contains("Sprite2D"):
-						#animate(node)
+			if not animation_is_playing:
+				for x in self.get_child_count():
+					var node = self.get_child(x)
+					if node.name.contains("Sprite2D"):
+						animate(node)
 					
 			velocity.y = FLAP_VELOCITY
 
@@ -63,7 +67,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0
 		velocity.y = 0
 		is_flying = false
-		is_blocked.emit()
+		is_blocked.emit(colors)
 		set_physics_process(false)
 	
 	if is_on_ceiling():
@@ -90,24 +94,25 @@ func _create_collision_shapes(birds_count) -> void:
 func _create_sprites(birds_count, colors) -> void:
 	#Funcion para agregar los sprites correspondientes a los colores designados.
 	
-	var sprite_base:Sprite2D = Sprite2D.new()
-	sprite_base.texture = birds_sprites
-	sprite_base.texture.region = Rect2(4, 7, 14, 17)
-	#sprite_base.texture.resource_local_to_scene = true
-	sprite_base.position = Vector2(0.5,-1.0)
-	self.add_child(sprite_base)
+	var sprite1:Sprite2D = Sprite2D.new()
+	sprite1.texture = birds_sprites.duplicate()
+	sprite1.texture.region = yellow_idle
+	sprite1.texture.resource_local_to_scene = true
+	sprite1.position = Vector2(0.5,-1.0)
+	sprite1.editor_description = colors[0]
+	self.add_child(sprite1)
 	if birds_count != 1:
 		var sprite2:Sprite2D = Sprite2D.new()
-		sprite2.texture = birds_sprites
+		sprite2.texture = birds_sprites.duplicate()
 		sprite2.texture.region = Rect2(4, 103, 14, 17)
-		#sprite_base.texture.resource_local_to_scene = true
+		sprite2.texture.resource_local_to_scene = true
 		sprite2.position = Vector2(-17.5,-1.0)
 		self.add_child(sprite2)
 		if birds_count == 3:
 			var sprite3:Sprite2D = Sprite2D.new()
-			sprite3.texture = birds_sprites
+			sprite3.texture = birds_sprites.duplicate()
 			sprite3.texture.region = Rect2(4, 31, 14, 17)
-			#sprite_base.texture.resource_local_to_scene = true
+			sprite3.texture.resource_local_to_scene = true
 			sprite3.position = Vector2(18.5,-1.0)
 			self.add_child(sprite3)
 	#detuve el codigo aca porque se me esta dificultando hacer que cada sprite sea unico
@@ -118,10 +123,10 @@ func _on_death_zone_body_exited(body: Node2D) -> void:
 		print("Estas muerto!")
 		
 func animate(sprite) -> void:
-	#Requiere revisar ya que no anima, con tween tampoco puedo hacer porque es un cambio
-	#discreto de una propiedad y no uno continuo.
+	#Anima correctamente pero no reconozco el color
 	animation_is_playing = true
-	sprite.region_rect = Rect2(121, 30, 17, 18)
-	await get_tree().create_timer(0.01).timeout
-	sprite.region_rect = Rect2(4, 7, 14, 17)
+	var reset_animation = sprite.texture.region
+	sprite.texture.region = yellow_flying
+	await get_tree().create_timer(0.1).timeout
+	sprite.texture.region = reset_animation
 	animation_is_playing = false
