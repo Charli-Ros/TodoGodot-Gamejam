@@ -20,6 +20,12 @@ shape = SubResource("RectangleShape2D_8gbba")
 [node name="IdleBirds" type="Node2D" parent="."]
 
 [node name="BirdSpawner" type="Node2D" parent="."]
-position = Vector2(134, 410)
+position = Vector2(205, 450)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 234.0
+offset_bottom = 42.0
 
 [connection signal="body_exited" from="DeathZone" to="." method="_on_death_zone_body_exited"]

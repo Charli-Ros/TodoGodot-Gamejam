@@ -5,8 +5,8 @@ var player:Birds
 var block
 
 func _ready() -> void:
+	pass
 	player = Birds.new(1)
-	print(player)
 	$BirdSpawner.add_child(player)
 	player.is_blocked.connect(_on_bird_is_blocked)
 
@@ -18,6 +18,7 @@ func _process(delta: float) -> void:
 		var random_colors:Array
 		for x in range(0,random_number):
 			random_colors.append(Globals.available_colors.pick_random())
+		random_colors.resize(3)
 		var player:Birds = Birds.new(random_number,random_colors)
 		$BirdSpawner.add_child(player)
 		player.is_blocked.connect(_on_bird_is_blocked)
@@ -26,15 +27,24 @@ func _on_death_zone_body_exited(body: Node2D) -> void:
 	body.queue_free()
 	flying_birds = false
 
-func _on_bird_is_blocked(colors: Array) -> void:
+func _on_bird_is_blocked(colors: Array, bird:Birds) -> void:
 	flying_birds = false
 	sum_global_colors(colors)
 
 func sum_global_colors(colors: Array) -> void:
-	#Usaria un diccionario para poder asignar el nombre del color a la variable local correcta.
-	print("nuevo pajaro")
-	print(colors)
 	for x in colors.size(): 
-		pass
-		#print(colors[x])
-	
+		if colors[x] != null:
+			if colors[x] == "C1":
+				Globals.c1_quantity = Globals.c1_quantity + 1
+			if colors[x] == "C2":
+				Globals.c2_quantity = Globals.c2_quantity + 1
+			if colors[x] == "C3":
+				Globals.c3_quantity = Globals.c3_quantity + 1
+			if colors[x] == "C4":
+				Globals.c4_quantity = Globals.c4_quantity + 1
+			if colors[x] == "C5":
+				Globals.c5_quantity = Globals.c5_quantity + 1
+			if colors[x] == "C6":
+				Globals.c6_quantity = Globals.c6_quantity + 1
+#para debuguear
+		$Label.text = "C1: " + var_to_str(Globals.c1_quantity) + " C2: " + var_to_str(Globals.c2_quantity) + " C3: " + var_to_str(Globals.c3_quantity) + " C4: " + var_to_str(Globals.c4_quantity) + " C5: " + var_to_str(Globals.c5_quantity) + " C6: " + var_to_str(Globals.c6_quantity)

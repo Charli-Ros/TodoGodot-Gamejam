@@ -1,23 +1,30 @@
 class_name Birds
 extends CharacterBody2D
 
-static var yellow_idle = Rect2(4, 7, 14, 17)
-static var yellow_flying = Rect2(121, 6, 17, 18)
-static var red_idle = Rect2(4, 31, 14, 17)
-static var red_flying = Rect2(121, 30, 17, 18)
-static var pink_idle = Rect2(4, 55, 14, 17)
-static var pink_flying = Rect2(121, 54, 17, 18)
-static var green_idle = Rect2(4, 78, 14, 18)
-static var green_flying = Rect2(121, 77, 17, 19)
-static var grey_idle = Rect2(4, 103, 14, 17)
-static var grey_flying = Rect2(121, 102, 17, 18)
-static var blue_idle = Rect2(4, 126, 14, 18)
-static var blue_flying = Rect2(121, 125, 17, 19)
-
 #Recursos prefabricados para armar la escena del player 
 @onready var birds_collision = preload("res://Scenes/bird_collision.tres")
 @onready var birds_sprites = preload("res://Scenes/player.tres")
-#Props para el constructor
+
+#Diccionarios para las referencias de colores en el texture atlas, idle y animation
+static var idle_dict = {
+	C1 = Rect2(4, 7, 14, 17), #yellow
+	C2 = Rect2(4, 31, 14, 17), #red
+	C3 = Rect2(4, 55, 14, 17), #pink
+	C4 = Rect2(4, 78, 14, 18), #green
+	C5 = Rect2(4, 103, 14, 17), #grey
+	C6 = Rect2(4, 126, 14, 18) #blue
+}
+
+static var flying_dict = {
+	C1 = Rect2(121, 6, 17, 18), #yellow
+	C2 = Rect2(121, 30, 17, 18), #red
+	C3 = Rect2(121, 54, 17, 18), #pink
+	C4 = Rect2(121, 77, 17, 19), #green
+	C5 = Rect2(121, 102, 17, 18), #grey
+	C6 = Rect2(121, 125, 17, 19) #blue
+}
+
+#Props para el constructor _init
 var is_flying:bool = true
 var birds_count:int = 1
 var colors:Array = ["C1", "C2", "C3"]
@@ -26,8 +33,8 @@ var colors:Array = ["C1", "C2", "C3"]
 const SPEED = 150.0
 const FLAP_VELOCITY = -150.0
 const GRAVITY_MOD = 0.5
-
 var animation_is_playing = false
+
 signal is_blocked
 
 func _init(_birds_count:int = 1, _colors:Array = ["C1", "C2", "C3"], _is_flying:bool = true) -> void:
@@ -55,7 +62,6 @@ func _physics_process(delta: float) -> void:
 					var node = self.get_child(x)
 					if node.name.contains("Sprite2D"):
 						animate(node)
-					
 			velocity.y = FLAP_VELOCITY
 
 		var direction := Input.get_axis("left", "right")
@@ -67,7 +73,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0
 		velocity.y = 0
 		is_flying = false
-		is_blocked.emit(colors)
+		is_blocked.emit(colors, self)
 		set_physics_process(false)
 	
 	if is_on_ceiling():
@@ -96,7 +102,7 @@ func _create_sprites(birds_count, colors) -> void:
 	
 	var sprite1:Sprite2D = Sprite2D.new()
 	sprite1.texture = birds_sprites.duplicate()
-	sprite1.texture.region = yellow_idle
+	sprite1.texture.region = idle_dict[colors[0]]
 	sprite1.texture.resource_local_to_scene = true
 	sprite1.position = Vector2(0.5,-1.0)
 	sprite1.editor_description = colors[0]
@@ -104,29 +110,28 @@ func _create_sprites(birds_count, colors) -> void:
 	if birds_count != 1:
 		var sprite2:Sprite2D = Sprite2D.new()
 		sprite2.texture = birds_sprites.duplicate()
-		sprite2.texture.region = Rect2(4, 103, 14, 17)
+		sprite2.texture.region = idle_dict[colors[1]]
 		sprite2.texture.resource_local_to_scene = true
 		sprite2.position = Vector2(-17.5,-1.0)
+		sprite2.editor_description = colors[1]
 		self.add_child(sprite2)
 		if birds_count == 3:
 			var sprite3:Sprite2D = Sprite2D.new()
 			sprite3.texture = birds_sprites.duplicate()
-			sprite3.texture.region = Rect2(4, 31, 14, 17)
+			sprite3.texture.region = idle_dict[colors[2]]
 			sprite3.texture.resource_local_to_scene = true
 			sprite3.position = Vector2(18.5,-1.0)
+			sprite3.editor_description = colors[2]
 			self.add_child(sprite3)
-	#detuve el codigo aca porque se me esta dificultando hacer que cada sprite sea unico
-	#tengo que revisar la forma de crear recursos y reutilizarlos
 	
 func _on_death_zone_body_exited(body: Node2D) -> void:
 		is_flying = false
 		print("Estas muerto!")
 		
 func animate(sprite) -> void:
-	#Anima correctamente pero no reconozco el color
 	animation_is_playing = true
 	var reset_animation = sprite.texture.region
-	sprite.texture.region = yellow_flying
+	sprite.texture.region = flying_dict[sprite.editor_description]
 	await get_tree().create_timer(0.1).timeout
 	sprite.texture.region = reset_animation
 	animation_is_playing = false
