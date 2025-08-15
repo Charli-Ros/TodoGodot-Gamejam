@@ -1,10 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://cs5v85v85trku"]
+[gd_scene load_steps=9 format=3 uid="uid://cs5v85v85trku"]
 
 [ext_resource type="Script" uid="uid://ck3iyeodcj3xt" path="res://Scenes/main.gd" id="1_8gbba"]
 [ext_resource type="PackedScene" uid="uid://oeyh1dp6xjls" path="res://Scenes/level1.tscn" id="2_8gbba"]
+[ext_resource type="Texture2D" uid="uid://0v6cg5gvn6tu" path="res://Assets/player_sprites.png" id="3_jjvhh"]
+[ext_resource type="Shape2D" uid="uid://bnj775pmrh5x0" path="res://Scenes/bird_collision.tres" id="4_kry3j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
 size = Vector2(802, 86.5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21xkr"]
+atlas = ExtResource("3_jjvhh")
+region = Rect2(4, 7, 14, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bp64"]
+atlas = ExtResource("3_jjvhh")
+region = Rect2(4, 31, 14, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
+size = Vector2(46, 12)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_8gbba")
@@ -18,9 +31,44 @@ position = Vector2(144, 656)
 shape = SubResource("RectangleShape2D_8gbba")
 
 [node name="IdleBirds" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="IdleBirds"]
+position = Vector2(212, 190)
+
+[node name="Sprite2D" type="Sprite2D" parent="IdleBirds/CharacterBody2D"]
+position = Vector2(0, 2)
+texture = SubResource("AtlasTexture_21xkr")
+
+[node name="w" type="Sprite2D" parent="IdleBirds/CharacterBody2D"]
+position = Vector2(-16, 2)
+texture = SubResource("AtlasTexture_21xkr")
+
+[node name="Sprite2D2" type="Sprite2D" parent="IdleBirds/CharacterBody2D"]
+position = Vector2(17, 2)
+texture = SubResource("AtlasTexture_6bp64")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D"]
+position = Vector2(0, 2)
+shape = ExtResource("4_kry3j")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D"]
+position = Vector2(17, 2)
+shape = ExtResource("4_kry3j")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D"]
+position = Vector2(-17, 2)
+shape = ExtResource("4_kry3j")
+
+[node name="Area2D" type="Area2D" parent="IdleBirds/CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D/Area2D"]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_jjvhh")
+debug_color = Color(0.958681, 0, 0.525808, 0.42)
 
 [node name="BirdSpawner" type="Node2D" parent="."]
-position = Vector2(205, 450)
+position = Vector2(126, 439)
 
 [node name="Label" type="Label" parent="."]
 offset_left = 25.0

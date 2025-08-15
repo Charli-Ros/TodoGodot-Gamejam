@@ -56,7 +56,6 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * GRAVITY_MOD * delta
 		
 		if Input.is_action_just_pressed("flap"):
-			#Intento fallido de animacion de sprites para que vuele.
 			if not animation_is_playing:
 				for x in self.get_child_count():
 					var node = self.get_child(x)
@@ -125,9 +124,9 @@ func _create_sprites(birds_count, colors) -> void:
 			self.add_child(sprite3)
 	
 func _on_death_zone_body_exited(body: Node2D) -> void:
-		is_flying = false
-		print("Estas muerto!")
-		
+	is_flying = false
+	print("Estas muerto!")
+	
 func animate(sprite) -> void:
 	animation_is_playing = true
 	var reset_animation = sprite.texture.region
@@ -135,3 +134,7 @@ func animate(sprite) -> void:
 	await get_tree().create_timer(0.1).timeout
 	sprite.texture.region = reset_animation
 	animation_is_playing = false
+
+func clear_bird() -> void:
+	#Funcion que sera usada para eliminar pajaros que hagan match
+	pass
