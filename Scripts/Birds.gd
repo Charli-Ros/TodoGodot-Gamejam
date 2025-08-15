@@ -59,7 +59,7 @@ func _physics_process(delta: float) -> void:
 			if not animation_is_playing:
 				for x in self.get_child_count():
 					var node = self.get_child(x)
-					if node.name.contains("Sprite2D"):
+					if node.name.contains("Sprite"):
 						animate(node)
 			velocity.y = FLAP_VELOCITY
 
@@ -84,16 +84,22 @@ func _create_collision_shapes(birds_count) -> void:
 	#Aqui tengo que crear las colisiones dependiendo de cuantos pajaros hay que crear.
 	var collision1:CollisionShape2D = CollisionShape2D.new()
 	collision1.shape = birds_collision
+	collision1.name = "CenterCollision"
+	collision1.editor_description = colors[0]
 	self.add_child(collision1)
 	if birds_count != 1:
 		var collision2:CollisionShape2D = CollisionShape2D.new()
 		collision2.shape = birds_collision
+		collision2.name = "LeftCollision"
 		collision2.position = Vector2(-18,0)
+		collision2.editor_description = colors[1]
 		self.add_child(collision2)
 		if birds_count == 3:
 			var collision3:CollisionShape2D = CollisionShape2D.new()
 			collision3.shape = birds_collision
+			collision3.name = "RightCollision"
 			collision3.position = Vector2(18,0)
+			collision3.editor_description = colors[2]
 			self.add_child(collision3)
 	
 func _create_sprites(birds_count, colors) -> void:
@@ -105,6 +111,7 @@ func _create_sprites(birds_count, colors) -> void:
 	sprite1.texture.resource_local_to_scene = true
 	sprite1.position = Vector2(0.5,-1.0)
 	sprite1.editor_description = colors[0]
+	sprite1.name = "CenterSprite"
 	self.add_child(sprite1)
 	if birds_count != 1:
 		var sprite2:Sprite2D = Sprite2D.new()
@@ -113,6 +120,7 @@ func _create_sprites(birds_count, colors) -> void:
 		sprite2.texture.resource_local_to_scene = true
 		sprite2.position = Vector2(-17.5,-1.0)
 		sprite2.editor_description = colors[1]
+		sprite2.name = "LeftSprite"
 		self.add_child(sprite2)
 		if birds_count == 3:
 			var sprite3:Sprite2D = Sprite2D.new()
@@ -121,6 +129,7 @@ func _create_sprites(birds_count, colors) -> void:
 			sprite3.texture.resource_local_to_scene = true
 			sprite3.position = Vector2(18.5,-1.0)
 			sprite3.editor_description = colors[2]
+			sprite3.name = "RightSprite"
 			self.add_child(sprite3)
 	
 func _on_death_zone_body_exited(body: Node2D) -> void:
@@ -136,5 +145,7 @@ func animate(sprite) -> void:
 	animation_is_playing = false
 
 func clear_bird() -> void:
+	queue_free()
+	
 	#Funcion que sera usada para eliminar pajaros que hagan match
 	pass

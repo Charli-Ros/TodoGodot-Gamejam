@@ -17,7 +17,7 @@ atlas = ExtResource("3_jjvhh")
 region = Rect2(4, 31, 14, 17)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
-size = Vector2(46, 12)
+size = Vector2(42, 4)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_8gbba")
@@ -33,40 +33,6 @@ shape = SubResource("RectangleShape2D_8gbba")
 [node name="IdleBirds" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="IdleBirds"]
-position = Vector2(212, 190)
-
-[node name="Sprite2D" type="Sprite2D" parent="IdleBirds/CharacterBody2D"]
-position = Vector2(0, 2)
-texture = SubResource("AtlasTexture_21xkr")
-
-[node name="w" type="Sprite2D" parent="IdleBirds/CharacterBody2D"]
-position = Vector2(-16, 2)
-texture = SubResource("AtlasTexture_21xkr")
-
-[node name="Sprite2D2" type="Sprite2D" parent="IdleBirds/CharacterBody2D"]
-position = Vector2(17, 2)
-texture = SubResource("AtlasTexture_6bp64")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D"]
-position = Vector2(0, 2)
-shape = ExtResource("4_kry3j")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D"]
-position = Vector2(17, 2)
-shape = ExtResource("4_kry3j")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D"]
-position = Vector2(-17, 2)
-shape = ExtResource("4_kry3j")
-
-[node name="Area2D" type="Area2D" parent="IdleBirds/CharacterBody2D"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="IdleBirds/CharacterBody2D/Area2D"]
-position = Vector2(0, 3)
-shape = SubResource("RectangleShape2D_jjvhh")
-debug_color = Color(0.958681, 0, 0.525808, 0.42)
-
 [node name="BirdSpawner" type="Node2D" parent="."]
 position = Vector2(126, 439)
 
@@ -76,4 +42,40 @@ offset_top = 12.0
 offset_right = 234.0
 offset_bottom = 42.0
 
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(436, 188)
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(0, 2)
+texture = SubResource("AtlasTexture_21xkr")
+
+[node name="w" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(-16, 2)
+texture = SubResource("AtlasTexture_21xkr")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(17, 2)
+texture = SubResource("AtlasTexture_6bp64")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(0, 2)
+shape = ExtResource("4_kry3j")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(17, 2)
+shape = ExtResource("4_kry3j")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(-17, 2)
+shape = ExtResource("4_kry3j")
+
+[node name="Area2D" type="Area2D" parent="CharacterBody2D"]
+position = Vector2(-221, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/Area2D"]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_jjvhh")
+debug_color = Color(0.958681, 0, 0.525808, 0.42)
+
 [connection signal="body_exited" from="DeathZone" to="." method="_on_death_zone_body_exited"]
+[connection signal="body_shape_entered" from="CharacterBody2D/Area2D" to="." method="_on_area_2d_body_shape_entered"]

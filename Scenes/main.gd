@@ -6,7 +6,7 @@ var block
 
 func _ready() -> void:
 	randomize()
-	player = Birds.new(1)
+	player = Birds.new(1,["C1",null,null])
 	$BirdSpawner.add_child(player)
 	player.is_blocked.connect(_on_bird_is_blocked)
 
@@ -40,6 +40,22 @@ func _on_bird_is_blocked(colors: Array, bird:Birds) -> void:
 	flying_birds = false
 	bird.reparent(%IdleBirds)
 	sum_global_colors(colors)
+	check_matching()
+	
+func check_matching() -> void:	
+	for x in $IdleBirds.get_children():
+		var area_H:Area2D = Area2D.new()
+		var collision_shape_H:RectangleShape2D = RectangleShape2D.new()
+		collision_shape_H.size = Vector2(42,4)
+		var collision_H:CollisionShape2D = CollisionShape2D.new()
+		collision_H.shape = collision_shape_H
+		area_H.add_child(collision_H)
+		x.get_node("CenterCollision").add_child(area_H)
+		area_H.body_shape_entered.connect(_on_area_2d_body_shape_entered)
+		#Necesitaria un timer para hacer un OneShot area, como si fuese ray casting.
+		#x.clear_bird()
+		#print(x)
+		pass
 
 func sum_global_colors(colors: Array) -> void:
 	for x in colors.size(): 
@@ -58,3 +74,9 @@ func sum_global_colors(colors: Array) -> void:
 				Globals.c6_quantity = Globals.c6_quantity + 1
 #para debuguear
 		$Label.text = "C1: " + var_to_str(Globals.c1_quantity) + " C2: " + var_to_str(Globals.c2_quantity) + " C3: " + var_to_str(Globals.c3_quantity) + " C4: " + var_to_str(Globals.c4_quantity) + " C5: " + var_to_str(Globals.c5_quantity) + " C6: " + var_to_str(Globals.c6_quantity)
+
+
+func _on_area_2d_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
+	var shape = body.get_child(body_shape_index)
+	print(shape.editor_description)
+	pass # Replace with function body.
