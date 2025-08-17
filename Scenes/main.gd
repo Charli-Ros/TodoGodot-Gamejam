@@ -50,12 +50,21 @@ func check_matching() -> void:
 		var collision_H:CollisionShape2D = CollisionShape2D.new()
 		collision_H.shape = collision_shape_H
 		area_H.add_child(collision_H)
-		x.get_node("CenterCollision").add_child(area_H)
+		area_H.collision_mask = 1
+		area_H.collision_layer = 1
+		area_H.name = "area_H"
+		x.add_child(area_H)
 		area_H.body_shape_entered.connect(_on_area_2d_body_shape_entered)
-		#Necesitaria un timer para hacer un OneShot area, como si fuese ray casting.
-		#x.clear_bird()
+		
+		#me gusta mas esta opcion que la signal, pero no puedo llamarla sin un await
+		#porque sino no alcanza a reconocer el body.
+		#var matching_H = x.get_node("area_H")
+		#if matching_H.has_overlapping_bodies():
+			#for y in matching_H.get_overlapping_bodies():
+				#print(y)
+		##Necesitaria un timer para hacer un OneShot area, como si fuese ray casting.
+		#x.clear_bird("Center","","")
 		#print(x)
-		pass
 
 func sum_global_colors(colors: Array) -> void:
 	for x in colors.size(): 
@@ -79,4 +88,3 @@ func sum_global_colors(colors: Array) -> void:
 func _on_area_2d_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
 	var shape = body.get_child(body_shape_index)
 	print(shape.editor_description)
-	pass # Replace with function body.

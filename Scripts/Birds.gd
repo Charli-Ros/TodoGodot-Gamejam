@@ -48,6 +48,9 @@ func _to_string() -> String:
 func _ready() -> void:
 	_create_collision_shapes(birds_count)
 	_create_sprites(birds_count, colors)
+	self.collision_layer = 1
+	self.set_collision_mask_value(1,true)
+	self.set_collision_mask_value(2,true)
 	var death_signal = get_parent().get_parent().get_node("DeathZone")
 	death_signal.body_exited.connect(_on_death_zone_body_exited)
 
@@ -146,6 +149,3 @@ func animate(sprite) -> void:
 
 func clear_bird() -> void:
 	queue_free()
-	
-	#Funcion que sera usada para eliminar pajaros que hagan match
-	pass
