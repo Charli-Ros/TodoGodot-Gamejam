@@ -4,8 +4,23 @@ var flying_birds:bool = true
 var player:Birds
 var block
 
+var area_H:Area2D = Area2D.new()
+var collision_shape_H:RectangleShape2D = RectangleShape2D.new()
+var collision_H:CollisionShape2D = CollisionShape2D.new()
+var area_V:Area2D = Area2D.new()
+var collision_shape_V:RectangleShape2D = RectangleShape2D.new()
+var collision_V:CollisionShape2D = CollisionShape2D.new()
+
+var matching_array:Array
+var birds_matching_array:Array
+
 func _ready() -> void:
 	randomize()
+	configure_matching_areas()
+	area_H.add_child(collision_H)
+	area_H.body_shape_entered.connect(_on_area_2d_body_shape_entered)
+	area_V.add_child(collision_V)
+	
 	player = Birds.new(1,["C1",null,null])
 	$BirdSpawner.add_child(player)
 	player.is_blocked.connect(_on_bird_is_blocked)
@@ -16,6 +31,21 @@ func _process(delta: float) -> void:
 		game_over()
 	if not flying_birds:
 		$BirdSpawner.add_child(spawn_random_bird())
+
+func configure_matching_areas() -> void:
+	#Esta funcion podria ser reemplazada por 2 recursos que se carguen desde el comienzo.
+	collision_shape_H.size = Vector2(42,4)
+	collision_H.shape = collision_shape_H
+
+	area_H.collision_mask = 1
+	area_H.collision_layer = 1
+	area_H.name = "area_H"
+	
+	collision_shape_V.size = Vector2(4,42)
+	collision_V.shape = collision_shape_V
+	area_V.collision_mask = 1
+	area_V.collision_layer = 1
+	area_V.name = "area_V"
 
 func spawn_random_bird() -> Birds:
 	flying_birds = true
@@ -40,22 +70,31 @@ func _on_bird_is_blocked(colors: Array, bird:Birds) -> void:
 	flying_birds = false
 	bird.reparent(%IdleBirds)
 	sum_global_colors(colors)
-	check_matching()
+	check_matching(bird)
 	
-func check_matching() -> void:	
-	for x in $IdleBirds.get_children():
-		var area_H:Area2D = Area2D.new()
-		var collision_shape_H:RectangleShape2D = RectangleShape2D.new()
-		collision_shape_H.size = Vector2(42,4)
-		var collision_H:CollisionShape2D = CollisionShape2D.new()
-		collision_H.shape = collision_shape_H
-		area_H.add_child(collision_H)
-		area_H.collision_mask = 1
-		area_H.collision_layer = 1
-		area_H.name = "area_H"
-		x.add_child(area_H)
-		area_H.body_shape_entered.connect(_on_area_2d_body_shape_entered)
-		
+func check_matching(bird:Birds) -> void:
+	for x in bird.get_children():
+		if x.name.contains("Collision"):
+			x.add_child(area_H)
+			#area_H.body_shape_entered.connect(_on_area_2d_body_shape_entered)
+			await get_tree().create_timer(0.05).timeout
+			print(matching_array)
+			print(birds_matching_array)
+			if matching_array.count("C1") == 3:
+				for z in birds_matching_array:
+					z.queue_free()
+				print("MATCH!!")
+				matching_array.clear()
+				birds_matching_array.clear()
+			else:
+				matching_array.clear()
+				birds_matching_array.clear()
+				x.remove_child(area_H)
+			#
+			#x.add_child(area_V)
+			#area_V.body_shape_entered.connect(_on_area_2d_body_shape_entered)
+			#await get_tree().create_timer(0.05).timeout
+			#x.remove_child(area_V)
 		#me gusta mas esta opcion que la signal, pero no puedo llamarla sin un await
 		#porque sino no alcanza a reconocer el body.
 		#var matching_H = x.get_node("area_H")
@@ -87,4 +126,6 @@ func sum_global_colors(colors: Array) -> void:
 
 func _on_area_2d_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
 	var shape = body.get_child(body_shape_index)
+	matching_array.append(shape.editor_description)
+	birds_matching_array.append(shape)
 	print(shape.editor_description)

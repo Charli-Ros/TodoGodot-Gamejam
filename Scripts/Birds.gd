@@ -61,9 +61,8 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("flap"):
 			if not animation_is_playing:
 				for x in self.get_child_count():
-					var node = self.get_child(x)
-					if node.name.contains("Sprite"):
-						animate(node)
+					var node = self.get_child(x).get_node_or_null("Sprite")
+					animate(node)
 			velocity.y = FLAP_VELOCITY
 
 		var direction := Input.get_axis("left", "right")
@@ -114,26 +113,26 @@ func _create_sprites(birds_count, colors) -> void:
 	sprite1.texture.resource_local_to_scene = true
 	sprite1.position = Vector2(0.5,-1.0)
 	sprite1.editor_description = colors[0]
-	sprite1.name = "CenterSprite"
-	self.add_child(sprite1)
+	sprite1.name = "Sprite"
+	self.get_node("CenterCollision").add_child(sprite1)
 	if birds_count != 1:
 		var sprite2:Sprite2D = Sprite2D.new()
 		sprite2.texture = birds_sprites.duplicate()
 		sprite2.texture.region = idle_dict[colors[1]]
 		sprite2.texture.resource_local_to_scene = true
-		sprite2.position = Vector2(-17.5,-1.0)
+		sprite2.position = Vector2(0.5,-1.0)
 		sprite2.editor_description = colors[1]
-		sprite2.name = "LeftSprite"
-		self.add_child(sprite2)
+		sprite2.name = "Sprite"
+		self.get_node("LeftCollision").add_child(sprite2)
 		if birds_count == 3:
 			var sprite3:Sprite2D = Sprite2D.new()
 			sprite3.texture = birds_sprites.duplicate()
 			sprite3.texture.region = idle_dict[colors[2]]
 			sprite3.texture.resource_local_to_scene = true
-			sprite3.position = Vector2(18.5,-1.0)
+			sprite3.position = Vector2(0.5,-1.0)
 			sprite3.editor_description = colors[2]
-			sprite3.name = "RightSprite"
-			self.add_child(sprite3)
+			sprite3.name = "Sprite"
+			self.get_node("RightCollision").add_child(sprite3)
 	
 func _on_death_zone_body_exited(body: Node2D) -> void:
 	is_flying = false
